@@ -1,0 +1,238 @@
+
+<!DOCTYPE html>
+<hmtl>
+  <head>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="myCSS.css">
+    <style>
+      body{
+        background-image:url("PogChamp (1).jpg");
+        background-position:right;
+        background-repeat: repeat;
+        margin: 0px;
+        padding: 0px;
+      }
+      canvas{
+        background-color:gray;
+      }
+      button{
+        border: none;
+        width:40px;
+        height:40px;
+      }
+      .eraseBtn{
+        background-color:white;
+        align:right;
+        border:1px solid;
+        padding:0px;
+        font-size:12px;
+      }
+      .clearBtn{
+        border:1px solid;
+        padding:0px;
+      }
+      .etch{
+        width:6%;
+        position:absolute;
+      }
+      .redBtn{
+        border:1px solid;
+      }
+      .yellowBtn{
+        border:1px solid;
+      }
+      .blueBtn{
+        border:1px solid;
+      }
+      .greenBtn{
+        border:1px solid;
+      }
+      .title{
+        background-color:pink;
+        color: blue;
+
+      }
+      .purpleBtn{
+        border:1px solid;
+      }
+      .orangeBtn{
+        border:1px solid;
+      }
+
+
+}
+    </style>
+    <title>
+      Draw!
+    </title>
+  </head>
+  <body>
+
+    <center>
+      <div class="title">
+       Draw! <img class="etch" src="sharp-pencil.png" height="105px"/>
+      </div>
+    </center>
+
+    <div class ="theCanvas" align="center" onmousemove="draw(event)" ontouchmove="touchDraw(event)">
+      <canvas style="background-color:white;cursor:crosshair" id="myCanvas" width="1400" height="810"></canvas>
+    </div>
+
+    <div align="right">
+      <button style="position:absolute;top:15%;left:90%;background:red;" id="redBtn" class="redBtn" onclick="redBtn()"></button>
+      <button style="position:absolute;top:15%;left:93%;background:yellow;" id="yellowBtn" class="yellowBtn" onclick="yellowBtn()"></button>
+      <button style="position:absolute;top:20%;left:90%;background:blue;" id="blueBtn" class="blueBtn" onclick="blueBtn()"></button>
+      <button style="position:absolute;top:20%;left:93%;background:green;" id="greenBtn" class="greenBtn" onclick="greenBtn()"></button>
+      <button style="position:absolute;top:25%;left:90%;background:orange;" id="orangeBtn" class="orangeBtn" onclick="orangeBtn()"></button>
+      <button style="position:absolute;top:25%;left:93%;background:purple;" id="purpleBtn" class="purpleBtn" onclick="purpleBtn()"></button>
+      <button style="position:absolute;top:30%;left:90%;background:black;" id="blackBtn" class="blackBtn" onclick="blackBtn()"></button>
+      <button style="position:absolute;top:30%;left:93%;background:pink;" id="eraseBtn" class="eraseBtn" onclick="eraseBtn()">Eraser</button>
+      <button style="width:100px;height:75px;position:absolute;top:36%;left:90%;background:white;" class="clearBtn" onclick="clearBtn()">Clear</button>
+    </div>
+
+
+
+    <script>
+
+      var c=document.getElementById("myCanvas");
+      var theCanvas=c.getContext("2d");
+      var xLoc=700;
+      var yLoc=400;
+      var isDown=false;
+      var redOn=false;
+      var yellowOn=false;
+      var blueOn=false;
+      var balckOn=true;
+      var greenOn=false;
+      var eraserOn=false;
+      var lastX=700;
+      var lastY=400;
+      var canvX=c.offsetLeft;
+      var canvY=c.offsetTop;
+
+      function redBtn()
+      {
+        theCanvas.strokeStyle="red";
+        eraserOn=false;
+      }
+      function yellowBtn()
+      {
+        theCanvas.strokeStyle="yellow";
+        eraserOn=false;
+      }
+      function blueBtn()
+      {
+        theCanvas.strokeStyle="blue";
+        eraserOn=false;
+      }
+      function blackBtn()
+      {
+        theCanvas.strokeStyle="black";
+        eraserOn=false;
+      }
+      function orangeBtn()
+      {
+        theCanvas.strokeStyle="orange";
+        eraserOn=false;
+      }
+      function purpleBtn()
+      {
+        theCanvas.strokeStyle="purple";
+        eraserOn=false;
+      }
+      function greenBtn()
+      {
+        theCanvas.strokeStyle="green";
+        eraserOn=false;
+      }
+      function eraseBtn()
+      {
+        eraserOn=true;
+        theCanvas.lineWidth=15;
+        theCanvas.strokeStyle="white";
+      }
+      function clearBtn()
+      {
+        var clearYes=confirm("Are you sure you want to clear?");
+        if(clearYes)
+        {
+          theCanvas.clearRect(0,0,c.width,c.height);
+          theCanvas.rect(0,0,c.width,c.height);
+          theCanvas.stroke();
+          theCanvas.beginPath();
+          theCanvas.clearRect(0,0,c.width,c.height);
+
+        }
+      }
+
+      function draw(event)
+      {
+        if(!eraserOn)
+          theCanvas.lineWidth=3;
+        if(isDown)
+        {
+          xLoc=event.clientX-canvX;
+          yLoc=event.clientY-canvY;
+          theCanvas.beginPath();
+          theCanvas.moveTo(lastX,lastY);
+          theCanvas.lineTo(xLoc,yLoc);
+          theCanvas.stroke();
+          theCanvas.closePath();
+
+        }
+        lastX=event.clientX-canvX;
+        lastY=event.clientY-canvY;
+      }
+
+      function touchDraw(event)
+      {
+        event.preventDefault();
+        if(!eraserOn)
+          theCanvas.lineWidth=3;
+        if(touched)
+        {
+          xLoc=event.targetTouches[0].pageX-canvX;
+          yLoc=event.targetTouches[0].pageY-canvY;
+          theCanvas.beginPath();
+          theCanvas.moveTo(lastX,lastY);
+          theCanvas.lineTo(xLoc,yLoc);
+          theCanvas.stroke();
+          theCanvas.closePath();
+
+        }
+        lastX=event.targetTouches[0].pageX-canvX;
+        lastY=event.targetTouches[0].pageY-canvY;
+      }
+
+
+
+
+      function mouseDownHandler()
+      {
+        isDown=true;
+      }
+
+      function mouseUpHandler()
+      {
+        isDown=false;
+      }
+      function touchHandler()
+      {
+        touched=true;
+      }
+      function touchUpHandler()
+      {
+        touched=false;
+      }
+
+
+
+
+      addEventListener("touchstart", touchHandler);
+      addEventListener("touchend", touchUpHandler);
+      addEventListener("mousedown", mouseDownHandler);
+      addEventListener("mouseup", mouseUpHandler);
+
+    </script>
+  </body>
+</html>
